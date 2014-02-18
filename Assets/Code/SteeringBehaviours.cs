@@ -16,6 +16,8 @@ namespace BGE
 
         public float mass;
 
+		Vector3[] points;
+
         public enum CalculationMethods { WeightedTruncatedSum, WeightedTruncatedRunningSumWithPrioritisation, PrioritisedDithering };
         CalculationMethods calculationMethod;
 
@@ -340,6 +342,10 @@ namespace BGE
 
         void Update()
         {
+
+			if(Vector3.Distance(seekTargetPos,transform.position)>=10){
+				FollowPath();
+			}
             float smoothRate;
             force = Calculate();
             SteeringBehaviours.checkNaN(force);
@@ -393,7 +399,12 @@ namespace BGE
 
         Vector3 Seek(Vector3 targetPos)
         {
-            return Vector3.zero;
+			Vector3 distanceFrom = targetPos - transform.position;
+			distanceFrom = Vector3.Normalize(distanceFrom);
+			distanceFrom *= Params.GetFloat("max_speed");
+			Vector3 speed = distanceFrom - velocity;
+			Debug.Log(speed);
+            return speed;
         }
 
         Vector3 Evade()
@@ -450,11 +461,21 @@ namespace BGE
         {
             return Vector3.zero;
         }
-
+		
+		int counter = 0;
         private Vector3 FollowPath()
         {
-            return Vector3.zero;
+			counter++;
+			if (counter>= points.Length){
+				counter =0;
+			}
+			seekTargetPos = points[counter];
+			return seekTargetPos;
         }
+
+		public void obtainPoints(Vector3[] pointsToMove){
+			points = pointsToMove;
+		}
 
         public Vector3 SphereConstrain(float radius)
         {
