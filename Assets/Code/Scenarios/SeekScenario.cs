@@ -29,7 +29,6 @@ namespace BGE.Scenarios
 			leader.GetComponent<SteeringBehaviours>().turnOffAll();
 			leader.GetComponent<SteeringBehaviours>().turnOn(SteeringBehaviours.behaviour_type.seek);
 			leader.GetComponent<SteeringBehaviours>().seekTargetPos = arrayForMovement[0];
-			leader.GetComponent<SteeringBehaviours>().obtainPoints(arrayForMovement);
 
 
             GroundEnabled(true);

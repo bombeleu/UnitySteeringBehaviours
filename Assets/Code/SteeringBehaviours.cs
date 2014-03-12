@@ -343,7 +343,7 @@ namespace BGE
         void Update()
         {
 
-			if(Vector3.Distance(seekTargetPos,transform.position)>=10){
+			if(Vector3.Distance(transform.position,seekTargetPos)>=10){
 				FollowPath();
 			}
             float smoothRate;
@@ -403,7 +403,6 @@ namespace BGE
 			distanceFrom = Vector3.Normalize(distanceFrom);
 			distanceFrom *= Params.GetFloat("max_speed");
 			Vector3 speed = distanceFrom - velocity;
-			Debug.Log(speed);
             return speed;
         }
 
