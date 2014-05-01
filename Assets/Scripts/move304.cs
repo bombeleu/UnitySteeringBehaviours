@@ -10,7 +10,7 @@ public class move304 : MonoBehaviour {
 
 		target = GameObject.Find("304Start1");
 
-		obj = GameObject.FindGameObjectWithTag("boid");
+		obj = GameObject.FindGameObjectWithTag("Earth ship1");
 
 
 	}

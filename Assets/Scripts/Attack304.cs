@@ -9,7 +9,12 @@ public class Attack304 : MonoBehaviour {
 	
 	GameObject mainCamera;
 	movement startBattle;
-
+	bool lazer = false,missileLaunch = false,
+	once = false,lazerVolley=false,lazerVolley1=false,
+	missileLaunch1 = false;
+	public bool move304camera =false;
+	float countForMissile = 0, roundsTheSecond=0;
+	int counter = 0;
 	//collideWithShield collide;
 	// Use this for initialization
 	void Start () {
@@ -21,12 +26,7 @@ public class Attack304 : MonoBehaviour {
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 		startBattle = mainCamera.GetComponent<movement>();
 	}
-	bool lazer = false,missileLaunch = false,
-	once = false,lazerVolley=false,lazerVolley1=false,
-	missileLaunch1 = false;
-	public bool move304camera =false;
-	float countForMissile = 0, roundsTheSecond=0;
-	int counter = 0;
+
 	// Update is called once per frame
 	void Update () {
 		if((fire!=null)&&(startBattle.commence)){
@@ -60,10 +60,13 @@ public class Attack304 : MonoBehaviour {
 				}
 			}
 			if(lazerVolley==false){
-				//lazerVolley=false;
-				move304camera = true;
 				lazerVolley1=true;
 				missileLaunch1 = true;
+			}
+			if(rounds2!=null){
+				if(Vector3.Distance(rounds2.transform.position,fireRound.transform.position)<=500){
+					move304camera = true;
+				}
 			}
 		}
 	}

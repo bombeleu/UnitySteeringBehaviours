@@ -8,7 +8,7 @@ using System.Collections;
 public class videoSource : MonoBehaviour {
 
 	public string imageFolderName = "";
-	public bool battleCommence = false, loop = false,Film = true;
+	public bool battleCommence = false,Film = true;
 	public ArrayList pictures;
 	public float counter = 0;
 	public float PictureRateInSeconds = 1;
@@ -17,7 +17,7 @@ public class videoSource : MonoBehaviour {
 	public AudioClip clip;
 	public Texture2D image;
 
-	GameObject giggle;
+	GameObject mainCamera;
 	movement playMovie;
 	AudioSource aud;
 	// Use this for initialization
@@ -26,8 +26,8 @@ public class videoSource : MonoBehaviour {
 			PictureRateInSeconds =0.01f;
 
 		img = Resources.LoadAll(imageFolderName);
-		giggle = GameObject.FindGameObjectWithTag("MainCamera");
-		playMovie = giggle.GetComponent<movement>(); 
+		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+		playMovie = mainCamera.GetComponent<movement>(); 
 	}
 	
 	// Update is called once per frame
@@ -38,14 +38,16 @@ public class videoSource : MonoBehaviour {
 	}
 
 	void OnGUI(){
-		if((counter <(img.Length)-23)&&(playMovie.playVid1)){
+		if((counter>=0)&&(counter <(img.Length)-23)&&(playMovie.playVid1)){
 			counter += 0.55f;
 			image = img[(int)counter] as Texture2D;
 			GUI.Label(new Rect(0,0,Screen.width,Screen.height),image);
 		}
 
-		if((counter >=(img.Length)-23)&&(!battleCommence)){
-			battleCommence = true;
+		if((counter >=(img.Length)-23)&&(playMovie.playVid1)){
+			if(playMovie.playVid1)
+				battleCommence = true;
+			counter = -1;
 			playMovie.playVid1=false;
 		}
 	}
