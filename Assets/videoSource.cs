@@ -17,7 +17,7 @@ public class videoSource : MonoBehaviour {
 	public AudioClip clip;
 	public Texture2D image;
 
-	GameObject mainCamera;
+	GameObject mainCamera, cube;
 	movement playMovie;
 	AudioSource aud;
 	// Use this for initialization
@@ -27,12 +27,14 @@ public class videoSource : MonoBehaviour {
 
 		img = Resources.LoadAll(imageFolderName);
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
-		playMovie = mainCamera.GetComponent<movement>(); 
+		playMovie = mainCamera.GetComponent<movement>();
+		cube = GameObject.FindGameObjectWithTag("obstacle");
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if((playMovie.playVid1)&&(counter ==0)){
+			Destroy(cube);
 			audio.Play();
 		}
 	}

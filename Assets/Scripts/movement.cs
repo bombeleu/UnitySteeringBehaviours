@@ -5,30 +5,23 @@ public class movement : MonoBehaviour {
 	GameObject[] CamerasPoints;
 	public GameObject Cam;
 	public int counter =0;
-	GameObject WormHole;
+	GameObject WormHole,ship2, lookVector,initialiseParticles,game,downTheHatchet;
 
+	moveGauold reachDestination;
 	private int moveSpeed, maxDistance;
-	
 	Transform target;
-	GameObject initialiseParticles;
-	GameObject game;
-	
-	public GameObject sup;
-	GameObject ship2;
 	OriMovement ori;
 	OriPath2 pa;
-	GameObject lookVector;
-
 	bool InstanceCheck=false;
 	public bool commence = false, changeCameraAngle = false, moveOri = false, test = false;
-	Vector3 _direction;
+	Vector3 _direction,dir,dople;
 	
 	Quaternion _look;
-	Vector3 dir;
 	Vector3[] dir1;
 	videoSource vid;
 
 	Attack304 attack;
+	Quaternion targets;
 
 	// Use this for initialization
 	void Start () {
@@ -44,9 +37,13 @@ public class movement : MonoBehaviour {
 
 		vid = Cam.GetComponent<videoSource>();
 
+		dople = new Vector3(280,190,80);
 		counter=1;
 		moveSpeed = 20;
 		maxDistance =100;
+
+		downTheHatchet = GameObject.FindGameObjectWithTag("Hatak 1");
+		reachDestination = downTheHatchet.GetComponent<moveGauold>();
 
 		for(int i =0; i < CamerasPoints.Length; i ++){
 			if(CamerasPoints[i].name == "CameraPoint")
@@ -57,6 +54,7 @@ public class movement : MonoBehaviour {
 		ori = ship2.GetComponent<OriMovement>();
 		attack = game.GetComponent<Attack304>();
 		Cam.transform.rotation = new Quaternion(5.7f,309.0645f, 1.4483f,0);
+		targets = new Quaternion(0.1f, -0.5f, 0.0f, 0.9f);
 	}
 
 	public bool playVid1 = false,movecam304 = false,longRange = false;
@@ -105,7 +103,6 @@ public class movement : MonoBehaviour {
 			_look = Quaternion.LookRotation(_direction);
 			Cam.transform.rotation = Quaternion.Slerp(Cam.transform.rotation,_look,Time.deltaTime*20);
 		}
-
 		//start the vid sequence
 		if((Vector3.Distance(ship2.transform.position, dir1[3]) <=12)&&(!vid.battleCommence)&&(!attack.move304camera)){
 			playVid1 = true;
@@ -171,20 +168,53 @@ public class movement : MonoBehaviour {
 			Cam.transform.position = Vector3.MoveTowards(Cam.transform.position,target.position, Time.deltaTime*moveSpeed);
 		}
 
-		if((counter==10)&&(Cam.transform.position== target.position)){
+		if((counter==10)&&(Cam.transform.position== target.position)&&(Cam.transform.rotation != targets)){
 			_direction = (lookVector.transform.position - Cam.transform.position).normalized;
 			_look = Quaternion.LookRotation(_direction);
 			Cam.transform.rotation = Quaternion.Slerp(Cam.transform.rotation, _look,Time.deltaTime*10);
+			Debug.Log(Cam.transform.rotation);
 		}
 
+
+		if((counter ==10)&&(Cam.transform.rotation ==targets)){
+			changeCameraAngle = true;
+		}
+		
+		if(counter ==11){
+			if(Cam.transform.position != target.position){
+				_direction = (ship2.transform.position - Cam.transform.position).normalized;
+				_look = Quaternion.LookRotation(_direction);
+				Cam.transform.rotation = Quaternion.Slerp(Cam.transform.rotation, _look,Time.deltaTime*moveSpeed);
+			}
+			Cam.transform.position = target.position;
+			
+		}
+		
+		if(reachDestination.reachDestination){
+			changeCameraAngle = true;
+			reachDestination.reachDestination = false;
+		}
+		
+		if((counter ==12)&&(Cam.transform.position != target.position)){
+			Cam.transform.position = target.position;
+			Cam.transform.rotation = Quaternion.Euler(Cam.transform.rotation.x-90,Cam.transform.rotation.y-300,Cam.transform.rotation.z+220);
+			moveOri = true;
+		}
+
+
+
 		if(changeCameraAngle){
-			counter+=1;
-			for(int i =0; i < CamerasPoints.Length; i ++){
-				if(CamerasPoints[i].name == "CameraPoint"+counter){
-					target = CamerasPoints[i].transform;
-					changeCameraAngle = false;
+			if(counter < CamerasPoints.Length-1){
+				counter+=1;
+				for(int i =0; i < CamerasPoints.Length; i ++){
+					if(CamerasPoints[i].name == "CameraPoint"+counter){
+						target = CamerasPoints[i].transform;
+						changeCameraAngle = false;
+					}
 				}
 			}
+		}else{
+			changeCameraAngle = false;
 		}
 	}
 }

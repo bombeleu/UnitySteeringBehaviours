@@ -15,7 +15,7 @@ public class Attack304 : MonoBehaviour {
 	public bool move304camera =false;
 	float countForMissile = 0, roundsTheSecond=0;
 	int counter = 0;
-	//collideWithShield collide;
+	collideWithShield collide;
 	// Use this for initialization
 	void Start () {
 		enemyShip1 = GameObject.FindGameObjectWithTag("Ori Mothership - 1");
@@ -33,6 +33,7 @@ public class Attack304 : MonoBehaviour {
 			if(!lazer){
 				lazerRound=Instantiate(fire,fireRound.transform.position, Quaternion.identity) as GameObject;
 				lazerRound.tag="Fire";
+				addTarget(lazerRound);
 				lazer = true;
 			}
 			if(countForMissile <=1)
@@ -45,14 +46,18 @@ public class Attack304 : MonoBehaviour {
 			if(missileLaunch){
 				missileRound = Instantiate(missile,fireRoundMissile1.transform.position, Quaternion.identity) as GameObject;
 				missileLaunch = false;
+				addTarget(missileRound);
 			}
 			if(lazerVolley){
 				rounds2= Instantiate(fire,fireRound1.transform.position, Quaternion.identity) as GameObject;
+				addTarget(rounds2);
 				if(counter<=3){
 					if(Vector3.Distance(rounds2.transform.position,fireRound1.transform.position)>=25){
 						rounds2= Instantiate(fire,fireRound1.transform.position, Quaternion.identity) as GameObject;
+						addTarget(rounds2);
 					}
 				}
+
 				counter +=1;
 				if(counter >=3){
 					lazerVolley = false;
@@ -63,11 +68,17 @@ public class Attack304 : MonoBehaviour {
 				lazerVolley1=true;
 				missileLaunch1 = true;
 			}
+
 			if(rounds2!=null){
 				if(Vector3.Distance(rounds2.transform.position,fireRound.transform.position)<=500){
 					move304camera = true;
 				}
 			}
 		}
+	}
+
+	void addTarget(GameObject addition){
+		collide = addition.GetComponent<collideWithShield>();
+		collide.attackName = "Ori Mothership - 1";
 	}
 }
