@@ -16,7 +16,7 @@ public class gauoldAttack : MonoBehaviour {
 	collideWithShield collide;
 	// Update is called once per frame
 	void Update () {
-		if(move.counter ==12){
+		if(move.counter >=12){
 			if((oldcount == 0)||(positions.co > oldcount)){
 				rounds2= Instantiate(fire,fireRound.transform.position, Quaternion.identity) as GameObject;
 				addTarget();

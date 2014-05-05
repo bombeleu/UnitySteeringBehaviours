@@ -31,6 +31,7 @@ public class oriAttack : MonoBehaviour {
 		if((move.counter >=12)&&(pos2!=null)){
 			if((gameObject.name =="Ori Mothership - 1")&&(!story)){
 				positions = pos2.GetComponent<moveGauold>();
+				Debug.Log(positions.path.Length);
 				if(Vector3.Distance(pos2.transform.position,positions.path[positions.path.Length-1])<=100){
 					rounds2 = Instantiate(fire,fireRound.transform.position, Quaternion.identity) as GameObject;
 					rounds2.name = "OriBeam";

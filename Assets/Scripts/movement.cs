@@ -5,15 +5,17 @@ public class movement : MonoBehaviour {
 	GameObject[] CamerasPoints;
 	public GameObject Cam;
 	public int counter =0;
-	GameObject WormHole,ship2, lookVector,initialiseParticles,game,downTheHatchet;
+	GameObject WormHole,ship2, lookVector,initialiseParticles,game,downTheHatchet,removedShip;
 
 	moveGauold reachDestination;
 	private int moveSpeed, maxDistance;
 	Transform target;
 	OriMovement ori;
 	OriPath2 pa;
-	bool InstanceCheck=false;
-	public bool commence = false, changeCameraAngle = false, moveOri = false, test = false;
+	bool InstanceCheck=false,port = false,cameraOneil = false;
+	public bool commence = false, changeCameraAngle = false, moveOri = false, test = false,
+	playVid1 = false,movecam304 = false,longRange = false,moveShip7 = false,moveShip5 = false;
+	spawnGauold spawn;
 	Vector3 _direction,dir,dople;
 	
 	Quaternion _look;
@@ -30,7 +32,7 @@ public class movement : MonoBehaviour {
 		dir = dir1[1];
 
 		game = GameObject.FindGameObjectWithTag("Earth ship1");
-		WormHole = GameObject.Find("wormhole");
+		WormHole = GameObject.Find("wormhole-1");
 		CamerasPoints = GameObject.FindGameObjectsWithTag("CameraPoint");
 		Cam = GameObject.FindGameObjectWithTag("MainCamera");
 		ship2 = GameObject.FindGameObjectWithTag("Ori Mothership - 2");
@@ -55,9 +57,9 @@ public class movement : MonoBehaviour {
 		attack = game.GetComponent<Attack304>();
 		Cam.transform.rotation = new Quaternion(5.7f,309.0645f, 1.4483f,0);
 		targets = new Quaternion(0.1f, -0.5f, 0.0f, 0.9f);
+		removedShip = GameObject.Find("Hatak - 5.2");
 	}
 
-	public bool playVid1 = false,movecam304 = false,longRange = false;
 	// Update is called once per frame
 	void Update () {
 		if((WormHole!=null)&&(!InstanceCheck)){
@@ -172,7 +174,6 @@ public class movement : MonoBehaviour {
 			_direction = (lookVector.transform.position - Cam.transform.position).normalized;
 			_look = Quaternion.LookRotation(_direction);
 			Cam.transform.rotation = Quaternion.Slerp(Cam.transform.rotation, _look,Time.deltaTime*10);
-			Debug.Log(Cam.transform.rotation);
 		}
 
 
@@ -201,7 +202,53 @@ public class movement : MonoBehaviour {
 			moveOri = true;
 		}
 
+		if(removedShip ==null){
+			changeCameraAngle = true;
+		}
 
+		if((counter ==13)&&(!port)){
+			Cam.transform.position = target.position;
+			
+			lookVector = GameObject.Find("GauoldSpawn");
+
+			//changeCameraAngle = true;
+			port = true;
+		}
+
+		if((port)&&(counter>=13)){
+			Cam.transform.LookAt(lookVector.transform.position);
+			spawn = gameObject.GetComponent<spawnGauold>();
+			spawn.bringForth = true;
+		//	changeCameraAngle = true;
+		}
+
+		if((counter ==14)&&(!cameraOneil)){
+			Cam.transform.position = target.position;
+			lookVector = GameObject.Find("Asgard_s Oneill");
+			Cam.transform.LookAt(lookVector.transform.position);
+			cameraOneil = true;
+		}
+
+		if((counter ==14)&&(cameraOneil)){
+			if(Vector3.Distance(lookVector.transform.position,Cam.transform.position)<=300)
+				Cam.transform.LookAt(lookVector.transform.position);
+			else
+				lookVector =  GameObject.Find("Hatak - 7");
+
+			if(lookVector !=null){
+				if(lookVector.name =="Hatak - 7"){
+					moveShip7 = true;
+				}
+				
+				if(lookVector.name =="Hatak - 5"){
+					moveShip7 = false;
+					moveShip5 = true;
+				}
+			}else{
+				lookVector =  GameObject.Find("Hatak - 5");
+			}
+
+		}
 
 		if(changeCameraAngle){
 			if(counter < CamerasPoints.Length-1){

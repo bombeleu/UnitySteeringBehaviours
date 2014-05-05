@@ -7,13 +7,14 @@ public class moveGauold : MonoBehaviour {
 	bool secondaryMovement;
 	Vector3 oriMother;
 	public string attackName;
+	movement moving;
 	// Use this for initialization
 	void Start () {
 		move = GameObject.FindGameObjectWithTag("Ori Mothership - 2");
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 		oriMother = new Vector3(move.transform.position.x,move.transform.position.y-400,move.transform.position.z);
+		moving = mainCamera.GetComponent<movement>();
 		otherShips = GameObject.FindGameObjectWithTag("Hatak 1");
-		//secondaryMovement = otherShips.GetComponent<moveGauold>().check;
 	}
 
 	public int co = 0;
@@ -43,15 +44,27 @@ public class moveGauold : MonoBehaviour {
 				hatak4();
 			else if(gameObject.name =="Hatak - 5")
 				hatak5();
+			else if(gameObject.name =="Hatak - 5.2")
+				hatak();
 			else if(gameObject.name =="Hatak - 6")
 				hatak6();
 			else if(gameObject.name =="Hatak - 7")
 				hatak7();
-			else if(gameObject.name =="Hatak - 5.2")
-				hatak();
-			if(Vector3.Distance(transform.position, path[co]) >= 10){
+			else if(gameObject.name =="Hatak - 8")
+				hatak8();
+			else if(gameObject.name =="Hatak - 9")
+				hatak9();
+			else if(gameObject.name =="Hatak - 10")
+				hatak10();
+			if((Vector3.Distance(transform.position, path[co]) >= 10)&&((!moving.moveShip7)||(!moving.moveShip5))){
 				transform.position = Vector3.MoveTowards(transform.position,path[co],10);
-			}else{
+			}else if((gameObject.name =="Hatak - 7")&&(moving.moveShip7)){
+				transform.position = Vector3.MoveTowards(transform.position,oriMother,10);
+			}
+			else if((gameObject.name =="Hatak - 5")&&(moving.moveShip5)){
+				transform.position = Vector3.MoveTowards(transform.position,GameObject.Find("lookOri").transform.position,10);
+			}
+			else{
 				if(co < path.Length-1){
 					co++;
 				}
@@ -104,5 +117,23 @@ public class moveGauold : MonoBehaviour {
 		path = new Vector3[1];
 		path[0] = new Vector3(534.015f,-242.5612f,-3227.392f);
 		attackName = "Ori Mothership - 1";
+	}
+	
+	void hatak8(){
+		path = new Vector3[1];
+		path[0] = new Vector3(-700.694f, 535.571f, -900.0f);
+		attackName = "Ori Mothership - 4";
+	}
+	
+	void hatak9(){
+		path = new Vector3[1];
+		path[0] = new Vector3(431.2926f, 535.571f, -900.0f);
+		attackName = "Ori Mothership - 2";
+	}
+	
+	void hatak10(){
+		path = new Vector3[1];
+		path[0] = new Vector3(-179.694f, 535.571f, -900.0f);
+		attackName = "Ori Mothership - 3";
 	}
 }
