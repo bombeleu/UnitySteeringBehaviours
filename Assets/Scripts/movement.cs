@@ -5,7 +5,7 @@ public class movement : MonoBehaviour {
 	GameObject[] CamerasPoints;
 	public GameObject Cam;
 	public int counter =0;
-	GameObject WormHole,ship2, lookVector,initialiseParticles,game,downTheHatchet,removedShip;
+	GameObject WormHole,ship2, lookVector,lookVector2,initialiseParticles,game,downTheHatchet,removedShip;
 
 	moveGauold reachDestination;
 	private int moveSpeed, maxDistance;
@@ -14,7 +14,8 @@ public class movement : MonoBehaviour {
 	OriPath2 pa;
 	bool InstanceCheck=false,port = false,cameraOneil = false;
 	public bool commence = false, changeCameraAngle = false, moveOri = false, test = false,
-	playVid1 = false,movecam304 = false,longRange = false,moveShip7 = false,moveShip5 = false;
+	playVid1 = false,movecam304 = false,longRange = false,moveShip7 = false,moveShip5 = false,
+	changeCam = false;
 	spawnGauold spawn;
 	Vector3 _direction,dir,dople;
 	
@@ -230,22 +231,39 @@ public class movement : MonoBehaviour {
 		}
 
 		if((counter ==14)&&(cameraOneil)){
-			if(Vector3.Distance(lookVector.transform.position,Cam.transform.position)<=300)
+			if((Vector3.Distance(lookVector.transform.position,Cam.transform.position)<=1000)&&(!changeCam))
 				Cam.transform.LookAt(lookVector.transform.position);
 			else
-				lookVector =  GameObject.Find("Hatak - 7");
+				changeCam = true;
 
-			if(lookVector !=null){
-				if(lookVector.name =="Hatak - 7"){
-					moveShip7 = true;
+
+			if((changeCam)&&(lookVector2==null)){
+				if(GameObject.Find("Hatak - 7") != null){
+					lookVector2 =  GameObject.Find("Hatak - 7");
+				}else if(GameObject.Find("Hatak - 1") !=null){
+					lookVector2 =  GameObject.Find("Hatak - 1");
 				}
-				
-				if(lookVector.name =="Hatak - 5"){
+
+			}
+			Debug.Log(Vector3.Distance(lookVector2.transform.position, gameObject.transform.position));
+			if((changeCam)&&(lookVector2!=null)){
+				if(lookVector2.name =="Hatak - 7"){
+					moveShip7 = true;
+					Cam.transform.LookAt(lookVector2.transform.position);
+				}
+				else if(lookVector2.name =="Hatak - 1"){
 					moveShip7 = false;
 					moveShip5 = true;
+					Vector3 removed7 =  GameObject.Find("CameraPoint11").transform.position;
+					Cam.transform.position = new Vector3(removed7.x-300,removed7.y-100,removed7.z-100);
+					Cam.transform.LookAt(lookVector2.transform.position);
+					if(Vector3.Distance(lookVector2.transform.position, gameObject.transform.position)>200){
+						changeCam = false;
+						moveShip5 = false;
+					}
 				}
-			}else{
-				lookVector =  GameObject.Find("Hatak - 5");
+
+				
 			}
 
 		}

@@ -4,7 +4,7 @@ using System.Collections;
 public class moveGauold : MonoBehaviour {
 	GameObject move, mainCamera,otherShips;
 	public bool reachDestination = false, check = false;
-	bool secondaryMovement;
+	bool secondaryMovement,abilityTomove = false;
 	Vector3 oriMother;
 	public string attackName;
 	movement moving;
@@ -56,13 +56,16 @@ public class moveGauold : MonoBehaviour {
 				hatak9();
 			else if(gameObject.name =="Hatak - 10")
 				hatak10();
-			if((Vector3.Distance(transform.position, path[co]) >= 10)&&((!moving.moveShip7)||(!moving.moveShip5))){
+			int gig = path.Length-1;
+			if((Vector3.Distance(transform.position, path[co]) >= 10)&&(co<=gig)&&(!abilityTomove)&&
+			   (!moving.changeCam)&&((!moving.moveShip7)||(!moving.moveShip5))){
 				transform.position = Vector3.MoveTowards(transform.position,path[co],10);
 			}else if((gameObject.name =="Hatak - 7")&&(moving.moveShip7)){
-				transform.position = Vector3.MoveTowards(transform.position,oriMother,10);
+				transform.position = Vector3.MoveTowards(transform.position,new Vector3(move.transform.position.x,move.transform.position.y,move.transform.position.z-150),10);
 			}
-			else if((gameObject.name =="Hatak - 5")&&(moving.moveShip5)){
+			else if((gameObject.name =="Hatak - 1")&&(moving.moveShip5)){
 				transform.position = Vector3.MoveTowards(transform.position,GameObject.Find("lookOri").transform.position,10);
+				abilityTomove = true;
 			}
 			else{
 				if(co < path.Length-1){

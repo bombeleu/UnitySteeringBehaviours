@@ -40,7 +40,18 @@ public class oriAttack : MonoBehaviour {
 				}
 			}
 		}
-	
+
+		if((move.counter>=14)&&((move.moveShip7)||(move.moveShip5))){
+			GameObject gau = GameObject.Find("Hatak - 7");
+			if(gau!=null){
+				Vector3 cool = new Vector3(gau.transform.position.x,gau.transform.position.y,gau.transform.position.z-150);
+				if(Vector3.Distance(cool,gau.transform.position)<= 151){
+					rounds2 = Instantiate(fire,fireRound.transform.position, Quaternion.identity) as GameObject;
+					rounds2.name = "OriBeam";
+					addTarget(rounds2, gau.name);
+				}
+			}
+		}
 	}
 	
 	void addTarget(GameObject addition,string attack){
